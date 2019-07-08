@@ -22,27 +22,24 @@ public class SkaiciaiTekste {
 		return yra_skaitmuo;
 	}
 	
-	public static String excludeSh ( String with_sh ) {
+	public static boolean yraDalisSkaiciaus ( String simbolis ) {
+
+		String[] dalys_skaiciaus = { ".", ",", "-", "e", "E", "+", "/", "%" };
+
+		boolean yra_dalis_skaiciaus = false;
 		
-		String excluded_sh = "";
+		for (int i = 0; i < dalys_skaiciaus.length; i++ ) {
 		
-		for ( int i = 0; i < ( with_sh.length() - 1 ); i++ ) {
+			if ( simbolis.equals ( dalys_skaiciaus [ i ] ) ) {
 			
-			String simb2 = with_sh.substring( i, i + 2 );
-			String simb1 = with_sh.substring( i, i + 1 );
-		
-			if ( simb2.equals( "š" ) ) {
-				
-				excluded_sh  += 's';
-				
-			} else {
-			
-				excluded_sh += simb1;
+				yra_dalis_skaiciaus = true;
 			}
 		}
-		return excluded_sh;
+		return yra_dalis_skaiciaus;
 	}
 	
+	
+		
 	public static void main(String[] args) throws Exception {
 	   
 		String thisLine = null;
@@ -60,17 +57,25 @@ public class SkaiciaiTekste {
 
 			while ( ( thisLine = br.readLine() ) != null ) {
 			 
-				boolean skaitmuo = false;
+				boolean pries_tai_buvo_skaitmuo = false;
 				
-				System.out.println( excludeSh ( thisLine ) );
+				System.out.println( thisLine );
 				
 				for ( int i = 0; i < thisLine.length(); i++ ) {
 					
 					simb =  thisLine.substring( i, i+1 );
 				
-					if ( yraSkaitmuo ( simb ) ) {
+					if ( 
+							yraSkaitmuo ( simb ) 
+						|| 
+							( 
+									pries_tai_buvo_skaitmuo  
+								&& 
+									yraDalisSkaiciaus ( simb )
+							)
+					) {
 						
-						if ( skaitmuo ) {
+						if ( pries_tai_buvo_skaitmuo ) {
 						
 							skaiciai [ kiekis_skaiciu - 1 ] += simb;
 							
@@ -79,11 +84,12 @@ public class SkaiciaiTekste {
 							skaiciai [ kiekis_skaiciu ] = simb;
 							kiekis_skaiciu++;
 						}
-						skaitmuo = true;
+					
+						pries_tai_buvo_skaitmuo = true;
 						
 					} else {
 						
-						skaitmuo = false;
+						pries_tai_buvo_skaitmuo = false;
 					}
 				}
 			} 
