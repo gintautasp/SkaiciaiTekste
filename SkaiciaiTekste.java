@@ -22,6 +22,27 @@ public class SkaiciaiTekste {
 		return yra_skaitmuo;
 	}
 	
+	public static String excludeSh ( String with_sh ) {
+		
+		String excluded_sh = "";
+		
+		for ( int i = 0; i < ( with_sh.length() - 1 ); i++ ) {
+			
+			String simb2 = with_sh.substring( i, i + 2 );
+			String simb1 = with_sh.substring( i, i + 1 );
+		
+			if ( simb2.equals( "š" ) ) {
+				
+				excluded_sh  += 's';
+				
+			} else {
+			
+				excluded_sh += simb1;
+			}
+		}
+		return excluded_sh;
+	}
+	
 	public static void main(String[] args) throws Exception {
 	   
 		String thisLine = null;
@@ -34,14 +55,14 @@ public class SkaiciaiTekste {
 			
 			String simb;
 			String[] skaiciai = new String [ 1000 ];
-			
 																									// double[] skaiciai = new double[1000];
-			int kiekis_skaitmenu = 0;
-		 
+			int kiekis_skaiciu = 0; 
+
 			while ( ( thisLine = br.readLine() ) != null ) {
 			 
+				boolean skaitmuo = false;
 				
-				System.out.println( thisLine );
+				System.out.println( excludeSh ( thisLine ) );
 				
 				for ( int i = 0; i < thisLine.length(); i++ ) {
 					
@@ -49,17 +70,28 @@ public class SkaiciaiTekste {
 				
 					if ( yraSkaitmuo ( simb ) ) {
 						
-						skaiciai [ kiekis_skaitmenu ] = simb;
+						if ( skaitmuo ) {
 						
-						kiekis_skaitmenu++;
+							skaiciai [ kiekis_skaiciu - 1 ] += simb;
+							
+						} else {
+							
+							skaiciai [ kiekis_skaiciu ] = simb;
+							kiekis_skaiciu++;
+						}
+						skaitmuo = true;
+						
+					} else {
+						
+						skaitmuo = false;
 					}
 				}
 			} 
-			System.out.println ( "viso skaitmenu: " + kiekis_skaitmenu );
+			System.out.println ( "viso skaiciu: " + kiekis_skaiciu );
 			
-			for ( int i = 0; i < kiekis_skaitmenu; i++ ) {
+			for ( int i = 0; i < kiekis_skaiciu; i++ ) {
 			
-				System.out.print ( " " + skaiciai [ i ] );
+				System.out.println ( " " + skaiciai [ i ] );
 			}
 			System.out.println();
 			
