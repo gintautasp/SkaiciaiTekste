@@ -33,6 +33,8 @@ public class SkaiciaiTekste {
 			System.out.println ( "duomenų failo turinys:" );
 			
 			String simb;
+			String[] skaiciai = new String [ 1000 ];
+			
 																									// double[] skaiciai = new double[1000];
 			int kiekis_skaitmenu = 0;
 		 
@@ -47,11 +49,19 @@ public class SkaiciaiTekste {
 				
 					if ( yraSkaitmuo ( simb ) ) {
 						
+						skaiciai [ kiekis_skaitmenu ] = simb;
+						
 						kiekis_skaitmenu++;
 					}
 				}
 			} 
 			System.out.println ( "viso skaitmenu: " + kiekis_skaitmenu );
+			
+			for ( int i = 0; i < kiekis_skaitmenu; i++ ) {
+			
+				System.out.print ( " " + skaiciai [ i ] );
+			}
+			System.out.println();
 			
 		} catch( Exception e ) {
 			
