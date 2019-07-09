@@ -38,6 +38,21 @@ public class SkaiciaiTekste {
 		return yra_dalis_skaiciaus;
 	}
 	
+	public static boolean yraZodzioPabaiga ( String simbolis ) {
+
+		String[] zodzio_pabaigos = { ".", ",", " ", "\n", ";", ":" };
+
+		boolean yra_zodzio_pabaiga = false;
+		
+		for (int i = 0; i < zodzio_pabaigos.length; i++ ) {
+		
+			if ( simbolis.equals ( zodzio_pabaigos [ i ] ) ) {
+			
+				yra_zodzio_pabaiga = true;
+			}
+		}
+		return yra_zodzio_pabaiga;
+	}	
 	
 		
 	public static void main(String[] args) throws Exception {
@@ -59,6 +74,9 @@ public class SkaiciaiTekste {
 			 
 				boolean pries_tai_buvo_skaitmuo = false;
 				
+				boolean yra_zodis_po_skaitmens = false;
+				// boolean yra_zodzio_pradzia_po_skaitmens = false;				
+				
 				System.out.println( thisLine );
 				
 				for ( int i = 0; i < thisLine.length(); i++ ) {
@@ -72,10 +90,12 @@ public class SkaiciaiTekste {
 									pries_tai_buvo_skaitmuo  
 								&& 
 									yraDalisSkaiciaus ( simb )
-							)
+							) 
+						||
+							yra_zodis_po_skaitmens
 					) {
 						
-						if ( pries_tai_buvo_skaitmuo ) {
+						if ( pries_tai_buvo_skaitmuo || yra_zodis_po_skaitmens ) { 				//  ------
 						
 							skaiciai [ kiekis_skaiciu - 1 ] += simb;
 							
@@ -84,11 +104,26 @@ public class SkaiciaiTekste {
 							skaiciai [ kiekis_skaiciu ] = simb;
 							kiekis_skaiciu++;
 						}
-					
-						pries_tai_buvo_skaitmuo = true;
+						
+						if ( ! yra_zodis_po_skaitmens ) {
+							
+							pries_tai_buvo_skaitmuo = true;
+							
+						} else {
+						
+							if ( yraZodzioPabaiga ( simb ) ) {
+								
+								yra_zodis_po_skaitmens = false;
+							}
+						}
 						
 					} else {
 						
+						if ( pries_tai_buvo_skaitmuo ) {
+						
+							yra_zodis_po_skaitmens = true;
+							skaiciai [ kiekis_skaiciu - 1 ] += simb;
+						}
 						pries_tai_buvo_skaitmuo = false;
 					}
 				}
