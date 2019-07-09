@@ -1,6 +1,9 @@
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.BufferedWriter;
+// import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -43,8 +46,25 @@ public class SkaiciaiTekste {
 			
 			BufferedReader vnt_file = new BufferedReader ( new FileReader ( "vnt.csv" ) );
 			
+			while ( ( thisLine = vnt_file.readLine() ) != null ) {
+				
+				if ( ! thisLine.trim().equals ( "" ) ) {
+				
+					vnt.add( thisLine );
+				}
+			}
+			vnt_file.close();
 			
 			BufferedReader anti_vnt_file = new BufferedReader ( new FileReader ( "anti_vnt.csv" ) );
+			
+			while ( ( thisLine = anti_vnt_file.readLine() ) != null ) {
+				
+				if ( ! thisLine.trim().equals ( "" ) ) {
+				
+					anti_vnt.add( thisLine );
+				}
+			}
+			anti_vnt_file.close();
 			
 			System.out.println ( "duomenų failo turinys:" );
 			
@@ -159,6 +179,37 @@ public class SkaiciaiTekste {
 				System.out.print( value ); 
 				System.out.print( " " ); 
 			}
+			
+			try ( 
+				BufferedWriter bw = new BufferedWriter( new FileWriter("vnt.csv") );
+			) {
+
+				for ( String value : vnt ) { 
+							
+					bw.write ( value + "\n");
+				}
+				bw.close();
+					
+			} catch ( Exception e ) {
+				
+				System.err.format ( "IOException: %s%n", e );
+			}			
+				
+
+			try ( 
+				BufferedWriter bw = new BufferedWriter( new FileWriter("anti_vnt.csv") );
+			) {
+
+				for ( String value : anti_vnt ) { 
+							
+					bw.write ( value + "\n");
+				}
+				bw.close();
+					
+			} catch ( Exception e ) {
+				
+				System.err.format ( "IOException: %s%n", e );
+			}			
 			
 		} catch( Exception e ) {
 			
